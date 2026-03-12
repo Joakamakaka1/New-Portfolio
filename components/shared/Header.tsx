@@ -13,9 +13,12 @@ export default function Header() {
         minute: "2-digit",
       });
 
-    setTime(fmt());
+    const timeout = setTimeout(() => setTime(fmt()), 0);
     const interval = setInterval(() => setTime(fmt()), 10_000);
-    return () => clearInterval(interval);
+    return () => {
+      clearTimeout(timeout);
+      clearInterval(interval);
+    };
   }, []);
 
   return (

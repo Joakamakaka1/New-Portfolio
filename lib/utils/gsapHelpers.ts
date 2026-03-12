@@ -237,7 +237,9 @@ export function horizontalLoop(
     tl.times = times;
     tl.progress(1, true).progress(0, true);
     if (config.reversed) {
-      tl.vars.onReverseComplete && (tl.vars.onReverseComplete as () => void)();
+      if (tl.vars.onReverseComplete) {
+        (tl.vars.onReverseComplete as () => void)();
+      }
       tl.reverse();
     }
     tl.closestIndex(true);
