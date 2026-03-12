@@ -1,0 +1,23 @@
+version: 2
+updates:
+  # Actualiza dependencias de npm/pnpm semanalmente
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+    ignore:
+      - dependency-name: "next"
+      - dependency-name: "eslint-config-next"
+
+  # Actualiza las GitHub Actions semanalmente
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
