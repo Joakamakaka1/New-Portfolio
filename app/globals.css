@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+/* ── Nintendo Switch OS — Design Tokens ─────────────────────────────────────── */
+:root {
+  /* Core surfaces */
+  --sw-bg: #1a1a1a; /* Switch charcoal — main body */
+  --sw-surface: #252525; /* Status bar / panels */
+  --sw-surface-2: #303030; /* Elevated panels */
+  --sw-surface-3: #404040; /* Hover states */
+
+  /* Borders */
+  --sw-border: rgba(255, 255, 255, 0.08);
+  --sw-border-2: rgba(255, 255, 255, 0.15);
+
+  /* ── THE Switch red focus ring ── */
+  --sw-focus: #e60012;
+  --sw-focus-glow: rgba(230, 0, 18, 0.45);
+
+  /* Text */
+  --sw-text: #ffffff;
+  --sw-muted: #9a9a9a;
+  --sw-muted-2: #5a5a5a;
+
+  /* Joy-Con ABXY colours */
+  --sw-btn-a: #e4001b; /* A Red   */
+  --sw-btn-b: #e4a200; /* B Yellow */
+  --sw-btn-x: #0084cf; /* X Blue  */
+  --sw-btn-y: #00a846; /* Y Green */
+
+  /* Status */
+  --sw-green: #34c759;
+  --sw-yellow: #f6b60b;
+
+  /* Fixed shell heights */
+  --navbar-h: 3rem; /* 48px */
+  --footer-h: 2.75rem; /* 44px */
+}
+
+/* ── Tailwind v4 bridge ─────────────────────────────────────────────────────── */
+@theme inline {
+  --color-background: var(--sw-bg);
+  --color-foreground: var(--sw-text);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* ── GLOBAL LOCK — No scroll anywhere ──────────────────────────────────────── */
+html {
+  height: 100%;
+  overflow: hidden;
+  background: var(--sw-bg);
+}
+
+body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--sw-bg);
+  color: var(--sw-text);
+  font-family:
+    var(--font-geist-sans),
+    system-ui,
+    -apple-system,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Apply select-none only to purely decorative/interactive UI shell elements */
+nav,
+aside,
+footer,
+header {
+  user-select: none;
+}
+
+/* ── Pixel-dot grid background ──────────────────────────────────────────────── */
+.sw-dot-grid {
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.055) 1px,
+    transparent 1px
+  );
+  background-size: 26px 26px;
+}
+
+/* ── Hide scrollbar utility ─────────────────────────────────────────────────── */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* ── Glass surface ──────────────────────────────────────────────────────────── */
+.sw-glass {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--sw-border);
+}
+
+/* ── Snappy scrollbar (only for overflow-y-scroll containers like ProjectDetail right panel) */
+::-webkit-scrollbar {
+  width: 3px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--sw-surface-3);
+  border-radius: 99px;
+}
+
+/* ── Joy-Con focus ring animation ───────────────────────────────────────────── */
+@keyframes sw-ring-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 3px var(--sw-focus),
+      0 0 20px var(--sw-focus-glow);
+  }
+  50% {
+    box-shadow:
+      0 0 0 3px var(--sw-focus),
+      0 0 36px rgba(0, 195, 227, 0.65);
+  }
+}
+.sw-ring-active {
+  animation: sw-ring-pulse 2s ease-in-out infinite;
+}
+
+/* ── View Transitions ───────────────────────────────────────────────────────── */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.animate-fade-in {
+  animation: fade-in 0.25s ease-out forwards;
+}
