@@ -30,7 +30,7 @@ export default function Header() {
         </div>
         {/* Semantic: name is branding identity, not a page heading */}
         <p className="font-bold text-black tracking-wide text-xs md:text-2xl hidden sm:block">
-          Joaquin Castro
+          Joaquin Castro Salas
         </p>
       </div>
 
