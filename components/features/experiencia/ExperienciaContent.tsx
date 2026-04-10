@@ -31,32 +31,11 @@ export default function ExperienciaContent({
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "power2.out", duration: 0.5 } });
-
-      tl.fromTo(titleRef.current, { y: -40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.6 });
-      tl.fromTo(expTitleRef.current, { y: -20, autoAlpha: 0 }, { y: 0, autoAlpha: 1 }, "+=0.1");
-
-      const expCards = expListRef.current?.children;
-      if (expCards) {
-        tl.fromTo(
-          expCards,
-          { y: 30, autoAlpha: 0 },
-          { y: 0, autoAlpha: 1, stagger: 0.1, ease: "back.out(1.2)", clearProps: "all" },
-          "-=0.3",
-        );
-      }
-
-      tl.fromTo(studiesTitleRef.current, { y: -20, autoAlpha: 0 }, { y: 0, autoAlpha: 1 }, "-=0.4");
-
-      const studiesCards = studiesListRef.current?.children;
-      if (studiesCards) {
-        tl.fromTo(
-          studiesCards,
-          { y: 30, autoAlpha: 0 },
-          { y: 0, autoAlpha: 1, stagger: 0.1, ease: "back.out(1.2)", clearProps: "all" },
-          "-=0.3",
-        );
-      }
+      gsap.fromTo(titleRef.current, { y: -30, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, ease: "power2.out" });
+      gsap.fromTo(expTitleRef.current, { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, delay: 0.05, ease: "power2.out" });
+      gsap.fromTo(expListRef.current, { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, delay: 0.1, ease: "power2.out", clearProps: "all" });
+      gsap.fromTo(studiesTitleRef.current, { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, delay: 0.15, ease: "power2.out" });
+      gsap.fromTo(studiesListRef.current, { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, delay: 0.2, ease: "power2.out", clearProps: "all" });
     }, containerRef);
 
     return () => ctx.revert();
@@ -65,11 +44,13 @@ export default function ExperienciaContent({
   return (
     <div
       ref={containerRef}
-      className="h-full w-full flex flex-col pt-0 pb-4 overflow-y-auto text-black scrollbar-hide"
+      className="h-full w-full flex flex-col pt-0 pb-4 overflow-y-auto scrollbar-hide"
+      style={{ color: "var(--st-on-surface)" }}
     >
       <h1
         ref={titleRef}
-        className="text-black font-bold text-4xl mb-12 flex items-center mt-2 md:mt-0"
+        className="font-black text-3xl md:text-4xl tracking-tight mb-10 mt-2 md:mt-0"
+        style={{ color: "var(--st-on-surface)" }}
       >
         Mi experiencia
       </h1>
@@ -77,13 +58,14 @@ export default function ExperienciaContent({
       <div className="mb-8 mt-2 md:mt-0">
         <h2
           ref={expTitleRef}
-          className="text-black font-bold text-lg mb-4 flex items-center"
+          className="font-bold text-lg mb-4 flex items-center"
+          style={{ color: "var(--st-on-surface)" }}
         >
           Experiencia Laboral
         </h2>
         <div ref={expListRef} className="flex flex-col gap-4 mt-2">
           {experience.map((item) => (
-            <ExperienceCard key={item.id} item={item} tagColor="blue" />
+            <ExperienceCard key={item.id} item={item} variant="work" />
           ))}
         </div>
       </div>
@@ -91,13 +73,14 @@ export default function ExperienciaContent({
       <div className="pb-6">
         <h2
           ref={studiesTitleRef}
-          className="text-black font-bold text-lg mb-4 flex items-center"
+          className="font-bold text-lg mb-4 flex items-center"
+          style={{ color: "var(--st-on-surface)" }}
         >
           Estudios y Formación
         </h2>
         <div ref={studiesListRef} className="flex flex-col gap-4 mt-2">
           {studies.map((item) => (
-            <ExperienceCard key={item.id} item={item} tagColor="red" />
+            <ExperienceCard key={item.id} item={item} variant="study" />
           ))}
         </div>
       </div>
@@ -107,25 +90,25 @@ export default function ExperienciaContent({
 
 function ExperienceCard({
   item,
-  tagColor,
+  variant,
 }: {
   item: ExperienceData;
-  tagColor: "blue" | "red";
+  variant: "work" | "study";
 }) {
   const Icon = ICON_MAP[item.iconKey];
 
-  const tagClasses =
-    tagColor === "blue"
-      ? "text-blue-600 bg-blue-50 border-blue-100"
-      : "text-red-600 bg-red-50 border-red-100";
+  const tagStyle =
+    variant === "work"
+      ? { background: "var(--st-tertiary-fixed)", color: "var(--st-tertiary)" }
+      : { background: "var(--st-primary-fixed)", color: "var(--st-primary)" };
 
   return (
     <article
-      className="group cursor-pointer bg-white border border-gray-200 rounded-lg p-5 flex flex-col sm:flex-row items-start sm:items-center shadow-sm relative overflow-hidden transition-[box-shadow,border-color,background-color] duration-300 hover:shadow-md hover:border-gray-300 focus:outline-none focus:ring-4 focus:ring-[#e60012]/50"
+      className="st-card st-glow-hover group cursor-pointer rounded-xl p-5 flex flex-col sm:flex-row items-start sm:items-center relative overflow-hidden"
       tabIndex={0}
     >
       <div
-        className={`w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-br ${item.color} rounded flex-shrink-0 flex items-center justify-center border border-white/20 shadow-inner z-10 relative overflow-hidden text-white/90 drop-shadow-md mb-4 sm:mb-0`}
+        className={`w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-br ${item.color} rounded-lg flex-shrink-0 flex items-center justify-center shadow-inner z-10 relative overflow-hidden text-white/90 drop-shadow-md mb-4 sm:mb-0`}
         aria-hidden="true"
       >
         {Icon && (
@@ -137,21 +120,31 @@ function ExperienceCard({
       <div className="sm:ml-6 flex flex-col justify-center flex-1 z-10 w-full">
         <div className="flex flex-col sm:flex-row sm:items-center mb-1">
           <span
-            className={`text-[10px] sm:text-xs font-bold uppercase tracking-widest ${tagClasses} px-2 py-0.5 rounded mr-auto sm:mr-4 mb-2 sm:mb-0 border`}
+            className="text-[10px] font-bold uppercase tracking-[0.1em] px-2 py-0.5 rounded mr-auto sm:mr-4 mb-2 sm:mb-0"
+            style={tagStyle}
           >
             {item.type} • {item.entity}
           </span>
-          <span className="text-xs font-bold text-gray-500">{item.date}</span>
+          <span
+            className="text-xs font-bold"
+            style={{ color: "var(--st-on-surface-variant)" }}
+          >
+            {item.date}
+          </span>
         </div>
-        <h3 className="text-lg sm:text-xl font-extrabold text-gray-800 leading-tight mb-2 transition-colors duration-200">
+        <h3
+          className="text-lg sm:text-xl font-extrabold leading-tight mb-2 group-hover:text-[var(--st-primary)] transition-colors duration-200"
+          style={{ color: "var(--st-on-surface)" }}
+        >
           {item.title}
         </h3>
-        <p className="text-sm text-gray-600 font-medium leading-relaxed max-w-3xl">
+        <p
+          className="text-sm font-medium leading-relaxed max-w-3xl"
+          style={{ color: "var(--st-on-surface-variant)" }}
+        >
           {item.description}
         </p>
       </div>
-
-      <div className="absolute inset-0 border-[3px] border-transparent group-hover:border-[#e60012] group-focus:border-[#e60012] rounded-lg pointer-events-none transition-colors duration-200 z-20" />
     </article>
   );
 }
