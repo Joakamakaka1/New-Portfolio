@@ -21,6 +21,9 @@ import {
   SiSpringboot,
   SiMysql,
   SiKubernetes,
+  SiNestjs,
+  SiNodedotjs,
+  SiGo,
 } from "react-icons/si";
 import type { SkillData } from "@/types";
 
@@ -41,6 +44,9 @@ const ICON_MAP: Record<string, IconType> = {
   SiSpringboot,
   SiMysql,
   SiKubernetes,
+  SiNestjs,
+  SiNodedotjs,
+  SiGo,
 };
 
 interface HabilidadesContentProps {
@@ -57,37 +63,9 @@ export default function HabilidadesContent({
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        defaults: { ease: "power2.out", duration: 0.5 },
-      });
-
-      tl.fromTo(
-        titleRef.current,
-        { y: -40, autoAlpha: 0 },
-        { y: 0, autoAlpha: 1, duration: 0.6 },
-      );
-      tl.fromTo(
-        subTitleRef.current,
-        { y: -20, autoAlpha: 0 },
-        { y: 0, autoAlpha: 1 },
-        "+=0.1",
-      );
-
-      const cards = skillsListRef.current?.children;
-      if (cards) {
-        tl.fromTo(
-          cards,
-          { y: 30, autoAlpha: 0 },
-          {
-            y: 0,
-            autoAlpha: 1,
-            stagger: 0.05,
-            ease: "back.out(1.2)",
-            clearProps: "all",
-          },
-          "-=0.4",
-        );
-      }
+      gsap.fromTo(titleRef.current, { y: -30, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, ease: "power2.out" });
+      gsap.fromTo(subTitleRef.current, { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, delay: 0.05, ease: "power2.out" });
+      gsap.fromTo(skillsListRef.current, { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, delay: 0.1, ease: "power2.out", clearProps: "all" });
     }, containerRef);
 
     return () => ctx.revert();
@@ -96,35 +74,38 @@ export default function HabilidadesContent({
   return (
     <div
       ref={containerRef}
-      className="h-full w-full flex flex-col pt-0 pb-4 overflow-y-auto text-black scrollbar-hide"
+      className="h-full w-full flex flex-col pt-0 pb-4 overflow-y-auto scrollbar-hide"
+      style={{ color: "var(--st-on-surface)" }}
     >
       <h1
         ref={titleRef}
-        className="text-black font-bold text-4xl mb-12 flex items-center mt-2 md:mt-0"
+        className="font-black text-3xl md:text-4xl tracking-tight mb-10 mt-2 md:mt-0"
+        style={{ color: "var(--st-on-surface)" }}
       >
         Mis habilidades
       </h1>
 
       <h2
         ref={subTitleRef}
-        className="text-black font-bold text-lg mb-4 flex items-center mt-2 md:mt-0"
+        className="font-bold text-lg mb-4 flex items-center mt-2 md:mt-0"
+        style={{ color: "var(--st-on-surface)" }}
       >
         Contenido Descargable (DLCs) y Habilidades
       </h2>
 
       <div
         ref={skillsListRef}
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-[120px] gap-6 mt-2 pb-6"
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-[120px] gap-5 mt-2 pb-6"
       >
         {skills.map((skill) => {
           const Icon = ICON_MAP[skill.iconKey];
           return (
             <div
               key={skill.id}
-              className="group bg-white border border-gray-200 hover:border-transparent hover:ring-[3px] hover:ring-inset hover:ring-[#e60012] rounded-lg p-3 flex items-center shadow-sm relative overflow-hidden transition-[box-shadow,border-color,background-color] duration-300 cursor-pointer"
+              className="st-card st-glow-hover group rounded-xl p-3 flex items-center cursor-pointer relative overflow-hidden"
             >
               <div
-                className={`w-[84px] h-[84px] bg-gradient-to-br ${skill.color} rounded flex-shrink-0 flex items-center justify-center border border-white/20 shadow-inner z-10 relative overflow-hidden text-white/90 drop-shadow-md`}
+                className={`w-[84px] h-[84px] bg-gradient-to-br ${skill.color} rounded-lg flex-shrink-0 flex items-center justify-center shadow-inner z-10 relative overflow-hidden text-white/90 drop-shadow-md`}
                 aria-hidden="true"
               >
                 {Icon && (
@@ -137,10 +118,16 @@ export default function HabilidadesContent({
               </div>
 
               <div className="ml-4 flex flex-col justify-center flex-1 max-w-[calc(100%-100px)] z-10">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                <span
+                  className="text-[10px] font-bold uppercase tracking-[0.1em]"
+                  style={{ color: "var(--st-on-surface-variant)" }}
+                >
                   {skill.type}
                 </span>
-                <h3 className="text-base font-bold text-gray-800 leading-tight mt-0.5 truncate">
+                <h3
+                  className="text-base font-bold leading-tight mt-0.5 truncate group-hover:text-[var(--st-primary)] transition-colors"
+                  style={{ color: "var(--st-on-surface)" }}
+                >
                   {skill.name}
                 </h3>
               </div>

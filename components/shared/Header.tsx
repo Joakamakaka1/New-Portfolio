@@ -35,44 +35,68 @@ export default function Header({
   }, []);
 
   return (
-    <header className="h-[72px] md:h-[96px] w-full flex items-center justify-between px-6 md:px-16 flex-shrink-0 bg-transparent z-20">
-      {/* Left side: Profile / Logo */}
-      <div className="flex flex-col md:flex-row items-center gap-4 group cursor-pointer relative">
-        <div className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-gray-200 border-2 border-transparent overflow-hidden flex items-center justify-center group-hover:border-[#e60012] transition-colors shadow-sm relative z-10">
-          <Image
-            src={avatarUrl}
-            alt={`Avatar de ${displayName}`}
-            width={56}
-            height={56}
-            className="w-full h-full object-cover"
-            priority
-          />
+    <header className="h-16 w-full flex items-center justify-between px-6 md:px-12 flex-shrink-0 z-20 st-glass-header shadow-sm">
+      {/* Left side: Profile + clock */}
+      <div className="flex items-center gap-4">
+        <Image
+          src={avatarUrl}
+          alt={`Avatar de ${displayName}`}
+          width={40}
+          height={40}
+          className="w-10 h-10 rounded-full object-cover"
+          priority
+        />
+        <div className="hidden sm:block">
+          <h2
+            className="text-sm font-bold"
+            style={{ color: "var(--st-on-surface)" }}
+          >
+            {displayName}
+          </h2>
+          <p className="text-[10px] font-medium text-slate-500 flex items-center gap-1">
+            <Search className="w-3 h-3" />
+            <time aria-label="Hora actual">{time}</time>
+          </p>
         </div>
-        {/* Semantic: name is branding identity, not a page heading */}
-        <p className="font-bold text-black tracking-wide text-xs md:text-2xl hidden sm:block">
-          {displayName}
-        </p>
       </div>
 
-      {/* Right side: System Status Icons */}
-      <div className="flex items-center gap-4 md:gap-8">
-        {/* Global Search Icon */}
-        <div
-          className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200 flex items-center justify-center cursor-pointer group text-gray-500 hover:text-gray-900 transition-colors shadow-sm relative overflow-visible"
-          role="button"
-          aria-label="Buscar"
-          tabIndex={0}
+      {/* Center: Quick links (desktop) — matches Stitch nav */}
+      <nav className="hidden md:flex items-center gap-6">
+        <a
+          href="https://github.com/Joakamakaka1"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-slate-600 font-bold text-sm hover:text-[var(--st-primary)] transition-colors"
         >
-          <div className="absolute -inset-1 border-2 border-[#e60012] rounded-full opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-0" />
-          <Search className="w-4 h-4 md:w-5 md:h-5 z-10" />
-        </div>
+          Github
+        </a>
+        <a
+          href="https://linkedin.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-slate-600 font-bold text-sm hover:text-[var(--st-primary)] transition-colors"
+        >
+          LinkedIn
+        </a>
+        <a
+          href="#"
+          className="text-slate-600 font-bold text-sm hover:text-[var(--st-primary)] transition-colors"
+        >
+          Resume
+        </a>
+      </nav>
 
-        {/* System Clock + WiFi */}
-        <div className="flex items-center gap-2 md:gap-3 text-gray-500 font-extrabold text-xs md:text-lg tracking-wide">
-          <time aria-label="Hora actual">{time}</time>
-          <div className="flex items-center gap-2 opacity-80">
-            <Wifi className="w-7 h-7 md:w-7 md:h-7" aria-hidden="true" />
-          </div>
+      {/* Right side: Actions — matches Stitch dark_mode + notifications */}
+      <div className="flex items-center gap-4">
+        <button
+          className="p-2 text-slate-600 hover:text-[var(--st-primary)] transition-colors"
+          aria-label="Buscar"
+        >
+          <Search className="w-5 h-5" />
+        </button>
+        <div className="flex items-center gap-2 text-slate-500 font-bold text-[10px] tracking-widest uppercase">
+          <time aria-label="Hora actual" className="hidden md:inline">{time}</time>
+          <Wifi className="w-5 h-5 opacity-60" aria-hidden="true" />
         </div>
       </div>
     </header>

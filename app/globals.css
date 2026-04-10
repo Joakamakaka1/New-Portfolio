@@ -1,45 +1,74 @@
 @import "tailwindcss";
 
-/* ── Nintendo Switch OS — Design Tokens ─────────────────────────────────────── */
+/* ── Stitch "Kinetic Developer Pro" Design Tokens ──────────────────────────── */
 :root {
-  /* Core surfaces */
-  --sw-bg: #1a1a1a; /* Switch charcoal — main body */
-  --sw-surface: #252525; /* Status bar / panels */
-  --sw-surface-2: #303030; /* Elevated panels */
-  --sw-surface-3: #404040; /* Hover states */
+  /* ── Primary (Racing Red) ── */
+  --st-primary: #b7000c;
+  --st-primary-container: #e60012;
+  --st-primary-fixed: #ffdad5;
+  --st-primary-fixed-dim: #ffb4aa;
+  --st-on-primary: #ffffff;
+  --st-on-primary-container: #fff7f6;
 
-  /* Borders */
-  --sw-border: rgba(255, 255, 255, 0.08);
-  --sw-border-2: rgba(255, 255, 255, 0.15);
+  /* ── Secondary (Kinetic Orange) ── */
+  --st-secondary: #a04100;
+  --st-secondary-container: #fe6b00;
+  --st-secondary-fixed: #ffdbcc;
+  --st-on-secondary: #ffffff;
 
-  /* ── THE Switch red focus ring ── */
-  --sw-focus: #e60012;
+  /* ── Tertiary (Cool Slate) ── */
+  --st-tertiary: #535a67;
+  --st-tertiary-container: #6b7280;
+  --st-tertiary-fixed: #dce2f3;
+  --st-on-tertiary: #ffffff;
+
+  /* ── Surfaces (Tonal Layering) ── */
+  --st-surface: #f8f9fa;
+  --st-surface-bright: #f8f9fa;
+  --st-surface-dim: #d9dadb;
+  --st-surface-container: #edeeef;
+  --st-surface-container-low: #f3f4f5;
+  --st-surface-container-high: #e7e8e9;
+  --st-surface-container-highest: #e1e3e4;
+  --st-surface-container-lowest: #ffffff;
+
+  /* ── On-Surface (Text) ── */
+  --st-on-surface: #191c1d;
+  --st-on-surface-variant: #5f3f3b;
+
+  /* ── Outline ── */
+  --st-outline: #946e69;
+  --st-outline-variant: #e9bcb6;
+
+  /* ── Error ── */
+  --st-error: #ba1a1a;
+  --st-error-container: #ffdad6;
+
+  /* ── Inverse ── */
+  --st-inverse-surface: #2e3132;
+  --st-inverse-on-surface: #f0f1f2;
+  --st-inverse-primary: #ffb4aa;
+
+  /* ── Status ── */
+  --st-green: #34c759;
+  --st-yellow: #f6b60b;
+
+  /* ── Ambient shadows (never pure black) ── */
+  --st-shadow-color: rgba(25, 28, 29, 0.06);
+  --st-shadow-sm: 0 2px 8px var(--st-shadow-color);
+  --st-shadow-md: 0 6px 20px var(--st-shadow-color);
+  --st-shadow-lg: 0 12px 40px var(--st-shadow-color);
+  --st-shadow-xl: 0 20px 60px rgba(25, 28, 29, 0.1);
+
+  /* ── Legacy aliases (backward compat) ── */
+  --sw-focus: var(--st-primary-container);
   --sw-focus-glow: rgba(230, 0, 18, 0.45);
-
-  /* Text */
-  --sw-text: #ffffff;
-  --sw-muted: #9a9a9a;
-  --sw-muted-2: #5a5a5a;
-
-  /* Joy-Con ABXY colours */
-  --sw-btn-a: #e4001b; /* A Red   */
-  --sw-btn-b: #e4a200; /* B Yellow */
-  --sw-btn-x: #0084cf; /* X Blue  */
-  --sw-btn-y: #00a846; /* Y Green */
-
-  /* Status */
-  --sw-green: #34c759;
-  --sw-yellow: #f6b60b;
-
-  /* Fixed shell heights */
-  --navbar-h: 3rem; /* 48px */
-  --footer-h: 2.75rem; /* 44px */
 }
 
 /* ── Tailwind v4 bridge ─────────────────────────────────────────────────────── */
 @theme inline {
-  --color-background: var(--sw-bg);
-  --color-foreground: var(--sw-text);
+  --color-background: var(--st-surface);
+  --color-foreground: var(--st-on-surface);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -48,16 +77,17 @@
 html {
   height: 100%;
   overflow: hidden;
-  background: var(--sw-bg);
+  background: var(--st-surface);
 }
 
 body {
   height: 100%;
   overflow: hidden;
-  background: var(--sw-bg);
-  color: var(--sw-text);
+  background: var(--st-surface);
+  color: var(--st-on-surface);
   font-family:
     var(--font-geist-sans),
+    "Inter",
     system-ui,
     -apple-system,
     sans-serif;
@@ -72,34 +102,16 @@ header {
   user-select: none;
 }
 
-/* ── Pixel-dot grid background ──────────────────────────────────────────────── */
-.sw-dot-grid {
-  background-image: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.055) 1px,
-    transparent 1px
-  );
-  background-size: 26px 26px;
-}
-
 /* ── Hide scrollbar utility ─────────────────────────────────────────────────── */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 .scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-/* ── Glass surface ──────────────────────────────────────────────────────────── */
-.sw-glass {
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--sw-border);
-}
-
-/* ── Snappy scrollbar (only for overflow-y-scroll containers like ProjectDetail right panel) */
+/* ── Snappy scrollbar (subtle, for content panes) ── */
 ::-webkit-scrollbar {
   width: 3px;
 }
@@ -107,8 +119,76 @@ header {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--sw-surface-3);
+  background: var(--st-surface-container-high);
   border-radius: 99px;
+}
+
+/* ── Glass surface (Stitch glassmorphism) ───────────────────────────────────── */
+.st-glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.st-glass-header {
+  background: rgba(248, 249, 250, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ── Tonal card (No-Line rule: depth via surface shift, not borders) ──────── */
+.st-card {
+  background: var(--st-surface-container-lowest);
+  box-shadow: var(--st-shadow-sm);
+  transition:
+    box-shadow 500ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.st-card:hover {
+  box-shadow: 0 20px 50px rgba(183, 0, 12, 0.1);
+}
+
+/* ── Tech badges (Uppercase, spec-sheet style) ──────────────────────────────── */
+.st-badge {
+  background: var(--st-surface-container);
+  color: var(--st-on-surface);
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+}
+
+/* ── Status chips ────────────────────────────────────────────────────────────── */
+.st-status-active {
+  background: var(--st-secondary-fixed);
+  color: var(--st-secondary);
+}
+.st-status-complete {
+  background: #dcfce7;
+  color: #166534;
+}
+.st-status-progress {
+  background: var(--st-primary-fixed);
+  color: var(--st-primary);
+}
+
+/* ── Ambient hover glow ─────────────────────────────────────────────────────── */
+.st-glow-hover {
+  position: relative;
+}
+.st-glow-hover::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: 2px solid transparent;
+  transition: border-color 300ms ease;
+  pointer-events: none;
+}
+.st-glow-hover:hover::after {
+  border-color: rgba(183, 0, 12, 0.15);
 }
 
 /* ── Joy-Con focus ring animation ───────────────────────────────────────────── */
@@ -116,13 +196,13 @@ header {
   0%,
   100% {
     box-shadow:
-      0 0 0 3px var(--sw-focus),
+      0 0 0 3px var(--st-primary-container),
       0 0 20px var(--sw-focus-glow);
   }
   50% {
     box-shadow:
-      0 0 0 3px var(--sw-focus),
-      0 0 36px rgba(0, 195, 227, 0.65);
+      0 0 0 3px var(--st-primary-container),
+      0 0 36px rgba(230, 0, 18, 0.35);
   }
 }
 .sw-ring-active {
@@ -142,4 +222,19 @@ header {
 }
 .animate-fade-in {
   animation: fade-in 0.25s ease-out forwards;
+}
+
+/* ── Stat card micro-animation ──────────────────────────────────────────────── */
+@keyframes count-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-count-up {
+  animation: count-up 0.5s ease-out forwards;
 }
