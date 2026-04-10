@@ -2,26 +2,36 @@
 
 import { useRef, useLayoutEffect } from "react";
 import gsap from "gsap";
-
 import Image from "next/image";
+import { GitFork, Star, ExternalLink } from "lucide-react";
+import type { GitHubProfile, GitHubRepository } from "@/types";
 
-interface NewsItem {
-  id: number;
-  title: string;
-  date: string;
-  image: string;
-}
+// ─── Language → colour mapping ────────────────────────────────────────────────
+const LANGUAGE_COLORS: Record<string, string> = {
+  TypeScript: "bg-blue-500",
+  JavaScript: "bg-yellow-400",
+  Python: "bg-emerald-500",
+  Java: "bg-orange-500",
+  HTML: "bg-red-500",
+  CSS: "bg-purple-500",
+  Shell: "bg-green-600",
+  Dockerfile: "bg-sky-500",
+};
 
 interface HomeContentProps {
-  news: NewsItem[];
+  profile: GitHubProfile;
+  latestRepos: GitHubRepository[];
 }
 
-export default function HomeContent({ news }: HomeContentProps) {
+export default function HomeContent({
+  profile,
+  latestRepos,
+}: HomeContentProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mainTitleRef = useRef<HTMLHeadingElement>(null);
   const greetingRef = useRef<HTMLDivElement>(null);
   const subTitleRef = useRef<HTMLHeadingElement>(null);
-  const newsRef = useRef<HTMLDivElement>(null);
+  const reposRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -49,10 +59,10 @@ export default function HomeContent({ news }: HomeContentProps) {
         "-=0.3",
       );
 
-      const newsCards = newsRef.current?.children;
-      if (newsCards) {
+      const repoCards = reposRef.current?.children;
+      if (repoCards) {
         tl.fromTo(
-          newsCards,
+          repoCards,
           { y: 20, autoAlpha: 0 },
           {
             y: 0,
@@ -69,6 +79,18 @@ export default function HomeContent({ news }: HomeContentProps) {
     return () => ctx.revert();
   }, []);
 
+  /** Relative time label from ISO date string */
+  function formatRelativeDate(isoDate: string): string {
+    const diff = Date.now() - new Date(isoDate).getTime();
+    const days = Math.floor(diff / 86_400_000);
+    if (days === 0) return "Hoy";
+    if (days === 1) return "Ayer";
+    if (days < 7) return `Hace ${days} días`;
+    if (days < 30) return `Hace ${Math.floor(days / 7)} semanas`;
+    if (days < 365) return `Hace ${Math.floor(days / 30)} meses`;
+    return `Hace ${Math.floor(days / 365)} años`;
+  }
+
   return (
     <div
       ref={containerRef}
@@ -81,62 +103,115 @@ export default function HomeContent({ news }: HomeContentProps) {
         Mi portfolio
       </h1>
 
+      {/* ── Hero banner with real GitHub profile data ── */}
       <div className="w-full min-h-[420px] bg-gradient-to-r from-red-600 to-orange-500 rounded-lg flex flex-col justify-end p-6 mb-8 relative overflow-hidden border border-gray-100">
         <div
           ref={greetingRef}
-          className="bg-white p-5  max-w-xl w-full shadow-lg border-l-4 border-[#e60012] z-10"
+          className="bg-white p-5 max-w-xl w-full shadow-lg border-l-4 border-[#e60012] z-10"
         >
-          <h1 className="text-2xl md:text-3xl font-extrabold text-gray-800 mb-2">
-            ¡Hola, soy Joaquin Castro!
-          </h1>
-          <p className="text-sm md:text-base text-gray-600 font-medium leading-relaxed">
+          {/* Profile header row */}
+          <div className="flex items-center gap-4 mb-3">
+            <Image
+              src={profile.avatarUrl}
+              alt={`Avatar de ${profile.name}`}
+              width={52}
+              height={52}
+              className="rounded-full border-2 border-gray-200 shadow-sm"
+            />
+            <div>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-gray-800 leading-tight">
+                ¡Hola, soy {profile.name}!
+              </h2>
+              <p className="text-xs text-gray-400 font-semibold">
+                @{profile.login}
+              </p>
+            </div>
+          </div>
+          <p className="text-sm md:text-base text-gray-600 font-medium leading-relaxed mb-4">
             Apasionado por la tecnología y su impacto. Desarrollador Fullstack
             especializado en Frontend y Backend. Bienvenido a mi portfolio
             interactivo.
           </p>
+          {/* GitHub stats pills */}
+          <div className="flex flex-wrap gap-3">
+            <span className="inline-flex items-center gap-1.5 bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-full">
+              📦 {profile.publicRepos} repos
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-full">
+              👥 {profile.followers} seguidores
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-full">
+              🗓️ Miembro desde{" "}
+              {new Date(profile.createdAt).toLocaleDateString("es-ES", {
+                month: "short",
+                year: "numeric",
+              })}
+            </span>
+          </div>
         </div>
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+')] opacity-30 z-0 pointer-events-none"></div>
       </div>
 
+      {/* ── Latest repos section ── */}
       <h2
         ref={subTitleRef}
         className="text-black font-bold text-lg mb-4 flex items-center"
       >
-        Novedades y Anuncios
+        Últimos Repositorios
       </h2>
 
       <div
-        ref={newsRef}
+        ref={reposRef}
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-6 mt-4"
       >
-        {news.map((item) => (
-          <div
-            key={item.id}
-            className="group cursor-pointer bg-white rounded-xl p-4 flex flex-col shadow-sm border border-gray-200 hover:border-transparent hover:ring-[3px] hover:ring-inset hover:ring-[#e60012] relative overflow-hidden transition-[box-shadow,border-color,background-color] duration-300"
+        {latestRepos.map((repo) => (
+          <a
+            key={repo.id}
+            href={repo.htmlUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group cursor-pointer bg-white rounded-xl p-5 flex flex-col shadow-sm border border-gray-200 hover:border-transparent hover:ring-[3px] hover:ring-inset hover:ring-[#e60012] relative overflow-hidden transition-[box-shadow,border-color,background-color] duration-300"
           >
-            <div className="relative group w-full aspect-video overflow-hidden mb-3 flex-shrink-0">
-              <Image
-                src={item.image}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                alt={item.title}
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              />
-
-              <div className="absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center p-4">
-                <h4 className="text-white font-extrabold tracking-wide text-lg text-center translate-y-4 group-hover:translate-y-0 transition-transform duration-300 drop-shadow-md">
-                  ¡Lee la noticia!
-                </h4>
-              </div>
+            {/* Repo name + external link icon */}
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="font-bold text-gray-800 text-sm group-hover:text-[#e60012] transition-colors duration-300 truncate">
+                {repo.name}
+              </h3>
+              <ExternalLink className="w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-shrink-0" />
             </div>
 
-            <h3 className="font-bold text-gray-800 text-sm transition-colors duration-300">
-              {item.title}
-            </h3>
-            <span className="text-xs font-bold text-gray-500 mt-1 tracking-wide">
-              {item.date}
-            </span>
-          </div>
+            {/* Description */}
+            <p className="text-xs text-gray-500 font-medium leading-relaxed line-clamp-2 mb-4 flex-1">
+              {repo.description ?? "Sin descripción"}
+            </p>
+
+            {/* Footer: language + stats + date */}
+            <div className="flex items-center justify-between text-[11px] font-bold text-gray-400 mt-auto">
+              <div className="flex items-center gap-3">
+                {repo.language && (
+                  <span className="flex items-center gap-1">
+                    <span
+                      className={`w-2.5 h-2.5 rounded-full ${LANGUAGE_COLORS[repo.language] ?? "bg-gray-400"}`}
+                    />
+                    {repo.language}
+                  </span>
+                )}
+                {repo.stargazersCount > 0 && (
+                  <span className="flex items-center gap-0.5">
+                    <Star className="w-3 h-3" /> {repo.stargazersCount}
+                  </span>
+                )}
+                {repo.forksCount > 0 && (
+                  <span className="flex items-center gap-0.5">
+                    <GitFork className="w-3 h-3" /> {repo.forksCount}
+                  </span>
+                )}
+              </div>
+              <span className="tracking-wide">
+                {formatRelativeDate(repo.updatedAt)}
+              </span>
+            </div>
+          </a>
         ))}
       </div>
     </div>

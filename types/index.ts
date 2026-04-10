@@ -57,3 +57,30 @@ export interface ExperienceData {
   color: string;
   iconKey: string;
 }
+
+// ─── GitHub ───────────────────────────────────────────────────────────────────
+export interface GitHubProfile {
+  login: string;
+  name: string;
+  avatarUrl: string;
+  profileUrl: string;
+  publicRepos: number;
+  followers: number;
+  following: number;
+  createdAt: string;
+}
+
+export interface GitHubRepository {
+  id: number;
+  name: string;
+  fullName: string;
+  description: string | null;
+  htmlUrl: string;
+  language: string | null;
+  stargazersCount: number;
+  forksCount: number;
+  updatedAt: string;
+  createdAt: string;
+  isPrivate: boolean;
+  defaultBranch: string;
+}

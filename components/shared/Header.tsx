@@ -1,9 +1,22 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { Search, Wifi } from "lucide-react";
 
-export default function Header() {
+interface HeaderProps {
+  avatarUrl?: string;
+  displayName?: string;
+}
+
+const FALLBACK_AVATAR =
+  "https://avatars.githubusercontent.com/u/129002508?v=4";
+const FALLBACK_NAME = "Joaquin Castro Salas";
+
+export default function Header({
+  avatarUrl = FALLBACK_AVATAR,
+  displayName = FALLBACK_NAME,
+}: HeaderProps) {
   const [time, setTime] = useState("");
 
   useEffect(() => {
@@ -26,11 +39,18 @@ export default function Header() {
       {/* Left side: Profile / Logo */}
       <div className="flex flex-col md:flex-row items-center gap-4 group cursor-pointer relative">
         <div className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-gray-200 border-2 border-transparent overflow-hidden flex items-center justify-center group-hover:border-[#e60012] transition-colors shadow-sm relative z-10">
-          <span className="text-gray-500 font-bold text-lg md:text-xl">JC</span>
+          <Image
+            src={avatarUrl}
+            alt={`Avatar de ${displayName}`}
+            width={56}
+            height={56}
+            className="w-full h-full object-cover"
+            priority
+          />
         </div>
         {/* Semantic: name is branding identity, not a page heading */}
         <p className="font-bold text-black tracking-wide text-xs md:text-2xl hidden sm:block">
-          Joaquin Castro Salas
+          {displayName}
         </p>
       </div>
 

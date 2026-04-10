@@ -19,6 +19,46 @@ export const NAV_LINKS: NavLink[] = [
 // ─── Proyectos ─────────────────────────────────────────────────────────────────
 export const PROJECTS: Project[] = [
   {
+    id: "travel-ai-world",
+    title: "Travel AI World",
+    description:
+      "Plataforma de viajes inteligente impulsada por IA. Incluye un scraper de datos turísticos, un backend con FastAPI y un frontend moderno. Genera itinerarios personalizados y sugiere destinos optimizando rutas.",
+    images: ["/Prueba5.png", "/Prueba3.png"],
+    technologies: [
+      "Python",
+      "FastAPI",
+      "Next.js",
+      "TypeScript",
+      "PostgreSQL",
+      "Docker",
+      "Web Scraping",
+      "IA",
+    ],
+    status: "in-progress",
+    links: {
+      repo: "https://github.com/Joakamakaka1/travel-ai-world",
+    },
+  },
+  {
+    id: "actividad-modulo-2",
+    title: "Actividad Módulo 2",
+    description:
+      "API REST completa con FastAPI y PostgreSQL, dockerizada con Docker Compose. Incluye operaciones CRUD, validaciones, manejo de errores (400/404), logging y tests automatizados.",
+    images: ["/Prueba6.png", "/Prueba2.png"],
+    technologies: [
+      "Python",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker",
+      "Docker Compose",
+      "Pytest",
+    ],
+    status: "completed",
+    links: {
+      repo: "https://github.com/Joakamakaka1/Actividad-Modulo-2",
+    },
+  },
+  {
     id: "valorant-fantasy",
     title: "Valorant Fantasy",
     description:
@@ -37,70 +77,30 @@ export const PROJECTS: Project[] = [
     ],
     status: "in-progress",
     links: {
-      repo: "https://github.com/Joakamakaka1/Valorant-Fantasy.git",
+      repo: "https://github.com/Joakamakaka1/Valorant-Fantasy",
     },
   },
   {
-    id: "aurevia",
+    id: "aurevia-backend",
     title: "Aurevia",
     description:
-      "Plataforma social de viajes inteligentes con IA para descubrir nuevos destinos y planificar viajes personalizados.",
+      "Backend de plataforma social de viajes inteligentes con IA. Arquitectura modular con FastAPI, autenticación JWT, caché Redis y base de datos MySQL. Descubre destinos y planifica viajes personalizados.",
     images: ["/Prueba3.png", "/Prueba5.png"],
     technologies: [
-      "Angular",
-      "TypeScript",
       "FastAPI",
       "Python",
-      "Redis",
       "MySQL",
+      "Redis",
       "JWT",
       "Docker",
       "Docker Compose",
+      "Angular",
+      "TypeScript",
     ],
     status: "in-progress",
     links: {
-      repo: "https://github.com/Joakamakaka1/Aurevia-Backend.git",
+      repo: "https://github.com/Joakamakaka1/Aurevia-Backend",
     },
-  },
-  {
-    id: "team-up",
-    title: "Team Up",
-    description:
-      "Plataforma para encontrar compañeros de estudio y trabajo mediante solicitudes personalizadas y creación de los grupos mediante un bot con IA integrada controlando el estado de los grupos y la gestión de los mismos.",
-    images: ["/Prueba.png"],
-    technologies: [],
-    status: "pending",
-    links: {},
-  },
-  {
-    id: "better-life",
-    title: "Better Life",
-    description:
-      "Aplicación de hábitos y bienestar personal para llevar un seguimiento de objetivos diarios y progreso personal. Próximamente.",
-    images: ["/Prueba2.png"],
-    technologies: [],
-    status: "pending",
-    links: {},
-  },
-  {
-    id: "pendia",
-    title: "PendIA",
-    description:
-      "Gestor de pagos inteligentes con IA para priorizar y organizar pagos pendientes. Próximamente.",
-    images: ["/Prueba3.png"],
-    technologies: [],
-    status: "pending",
-    links: {},
-  },
-  {
-    id: "travel-ia-world",
-    title: "Travel IA World",
-    description:
-      "Planificador de viajes impulsado por IA que genera itinerarios personalizados, sugiere destinos y optimiza rutas. Próximamente.",
-    images: ["/Prueba5.png"],
-    technologies: [],
-    status: "pending",
-    links: {},
   },
 ];
 
